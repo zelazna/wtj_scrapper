@@ -1,7 +1,5 @@
 defmodule WtjScrapper.Parser do
-  alias WtjScrapper.Job
-
-  def parse_job(html, %Job{} = job) do
+  def parse_job(html, job) do
     get_job_content({html, job})
     |> get_job_title()
   end
@@ -16,10 +14,10 @@ defmodule WtjScrapper.Parser do
     content =
       html
       |> Floki.find("main section:nth-child(4) section")
-      |> Enum.map(&Floki.text/1)
+      |> Enum.map(&Floki.text(&1, sep: "\n"))
       |> Enum.join("\n")
 
-    {html, %Job{job | content: content}}
+    {html, %{job | content: content}}
   end
 
   defp get_job_title({html, job}) do
@@ -28,6 +26,6 @@ defmodule WtjScrapper.Parser do
       |> Floki.find("h1")
       |> Floki.text()
 
-    {html, %Job{job | title: title}}
+    {html, %{job | title: title}}
   end
 end

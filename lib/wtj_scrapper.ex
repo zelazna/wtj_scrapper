@@ -3,23 +3,41 @@ defmodule WtjScrapper do
   Documentation for WtjScrapper.
   """
   alias WtjScrapper.Parser
-  alias WtjScrapper.Job
   alias WtjScrapper.HTTP.SplashClient
   alias WtjScrapper.HTTP.WtjClient
+  alias WtjScrapper.Repo
+  alias WtjScrapper.Models.Tag
+  alias WtjScrapper.Models.Job
 
-  def run() do
+  def run(tag_name) do
     SplashClient.start()
     WtjClient.start()
 
-    SplashClient.get!(Application.get_env(:wtj_scrapper, :wtj_url) <> "/fr/jobs?query=python").body
+    changeset = Tag.changeset(%Tag{}, %{name: tag_name})
+
+    tag =
+      case Repo.insert(changeset) do
+        {:error, _changeset} -> Repo.get_by(Tag, name: tag_name)
+        {:ok, tag} -> tag
+      end
+
+    SplashClient.get!(
+      Application.get_env(:wtj_scrapper, :wtj_url) <> "/fr/jobs?query=#{tag_name}"
+    ).body
     |> Parser.get_links()
-    |> Enum.map(&WtjClient.get!(&1, sep: " "))
+    |> Enum.map(&WtjClient.get!(&1))
     |> Enum.map(&unserialize_job/1)
-    |> Enum.map(&WtjScrapper.Repo.find_or_create/1)
+    |> Enum.map(&save_job(%{&1 | tag_id: tag.id}))
   end
 
   defp unserialize_job(request) do
-    {_html, job} = Parser.parse_job(request.body, %Job{})
-    %Job{job | url: request.request_url}
+    job_map = %{content: nil, tag_id: nil, title: nil, url: nil}
+    {_html, job} = Parser.parse_job(request.body, job_map)
+    %{job | url: request.request_url}
+  end
+
+  defp save_job(job) do
+    Job.changeset(%Job{}, job)
+    |> Repo.insert()
   end
 end
