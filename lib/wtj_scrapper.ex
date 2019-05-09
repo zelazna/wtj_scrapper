@@ -25,11 +25,12 @@ defmodule WtjScrapper do
 
     SplashClient.get!(
       Application.get_env(:wtj_scrapper, :splash_url),
+      [],
       params: %{
-        "url" => Application.get_env(:wtj_scrapper, :wtj_url) <> "/fr/jobs?query=#{tag_name}",
-        "timeout" => 10,
-        "wait" => 5,
-        "User-Agent" => Application.get_env(:wtj_scrapper, :user_agent)
+        url: Application.get_env(:wtj_scrapper, :wtj_url) <> "/fr/jobs?query=#{tag_name}",
+        timeout: 10,
+        wait: 5,
+        "User-Agent": Application.get_env(:wtj_scrapper, :user_agent)
       },
       recv_timeout: 10000
     ).body
