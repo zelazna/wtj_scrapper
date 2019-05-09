@@ -2,11 +2,9 @@ defmodule WtjScrapper do
   @moduledoc """
   Documentation for WtjScrapper.
   """
-  alias HTTP.SplashClient
-  alias HTTP.WtjClient
+  alias HTTP.{SplashClient, WtjClient}
 
-  alias WtjScrapper.Parser
-  alias WtjScrapper.Repo
+  alias WtjScrapper.{Parser, Repo}
   alias WtjScrapper.Models.Tag
 
   def run(tags) when is_list(tags) do
@@ -26,7 +24,15 @@ defmodule WtjScrapper do
       end
 
     SplashClient.get!(
-      Application.get_env(:wtj_scrapper, :wtj_url) <> "/fr/jobs?query=#{tag_name}"
+      Application.get_env(:wtj_scrapper, :splash_url),
+      [],
+      params: %{
+        url: Application.get_env(:wtj_scrapper, :wtj_url) <> "/fr/jobs?query=#{tag_name}",
+        timeout: 10,
+        wait: 5,
+        "User-Agent": Application.get_env(:wtj_scrapper, :user_agent)
+      },
+      recv_timeout: 10000
     ).body
     |> Parser.get_links()
     |> Enum.map(&Task.async(WtjScrapper.JobHandler, :get_job, [&1, tag]))

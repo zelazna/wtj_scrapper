@@ -1,4 +1,4 @@
 defmodule WtjScrapperTest do
   use ExUnit.Case
-  doctest WtjScrapper
+  # @TODO
 end
