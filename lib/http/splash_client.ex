@@ -1,4 +1,4 @@
-defmodule WtjScrapper.HTTP.SplashClient do
+defmodule HTTP.SplashClient do
   use HTTPoison.Base
 
   @path_map %{

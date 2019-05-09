@@ -1,4 +1,4 @@
-defmodule WtjScrapper.HTTP.WtjClient do
+defmodule HTTP.WtjClient do
   use HTTPoison.Base
 
   def process_request_options(options), do: options ++ [ssl: [{:versions, [:"tlsv1.2"]}]]
