@@ -12,7 +12,9 @@ config :wtj_scrapper, ecto_repos: [WtjScrapper.Repo]
 
 config :wtj_scrapper,
   wtj_url: "https://www.welcometothejungle.co",
-  splash_url: "http://localhost:8050/render.html?"
+  splash_url: "http://localhost:8050/render.html?",
+  user_agent:
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -39,4 +41,4 @@ config :wtj_scrapper,
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-#     import_config "#{Mix.env()}.exs"
+import_config "#{Mix.env()}.exs"

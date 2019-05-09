@@ -23,3 +23,5 @@ erl_crash.dump
 wtj_scrapper-*.tar
 
 .vscode
+
+cover
