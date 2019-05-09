@@ -25,3 +25,5 @@ wtj_scrapper-*.tar
 .vscode
 
 cover
+
+.DS_Store
