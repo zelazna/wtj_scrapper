@@ -2,7 +2,7 @@ defmodule WtjScrapper do
   @moduledoc """
   Documentation for WtjScrapper.
   """
-  alias HTTP.{SplashClient, WtjClient}
+  alias HTTP.WtjClient
 
   alias WtjScrapper.{Parser, Repo}
   alias WtjScrapper.Models.Tag
@@ -12,7 +12,7 @@ defmodule WtjScrapper do
   end
 
   def run(tag_name) when is_binary(tag_name) do
-    SplashClient.start()
+    HTTPoison.start()
     WtjClient.start()
 
     changeset = Tag.changeset(%Tag{}, %{name: tag_name})
@@ -23,7 +23,7 @@ defmodule WtjScrapper do
         {:ok, tag} -> tag
       end
 
-    SplashClient.get!(
+    HTTPoison.get!(
       Application.get_env(:wtj_scrapper, :splash_url),
       [],
       params: %{
