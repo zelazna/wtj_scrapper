@@ -1,9 +1,10 @@
 use Mix.Config
 
 config :wtj_scrapper, WtjScrapper.Repo,
+  adapter: Ecto.Adapters.Postgres,
   database: "wtj_scrapper_repo_test",
-  username: "constantinguidon",
-  password: "pass",
+  username: "postgres",
+  password: "",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

@@ -2,12 +2,6 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :wtj_scrapper, WtjScrapper.Repo,
-  database: "wtj_scrapper_repo",
-  username: "constantinguidon",
-  password: "pass",
-  hostname: "localhost"
-
 config :wtj_scrapper, ecto_repos: [WtjScrapper.Repo]
 
 config :wtj_scrapper,
