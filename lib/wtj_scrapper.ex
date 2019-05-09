@@ -9,7 +9,11 @@ defmodule WtjScrapper do
   alias WtjScrapper.Repo
   alias WtjScrapper.Models.Tag
 
-  def run(tag_name) do
+  def run(tags) when is_list(tags) do
+    Enum.map(tags, &run/1)
+  end
+
+  def run(tag_name) when is_binary(tag_name) do
     SplashClient.start()
     WtjClient.start()
 

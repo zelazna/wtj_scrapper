@@ -2,9 +2,9 @@
 
 ## TODO
 
-- [ ] Requests concurency
+- [x] Requests concurency
 - [ ] Unit Tests
-- [ ] Multi tag search
+- [x] Multi tag search
 - [ ] Better data ingestion
 
 <!-- ## Installation
