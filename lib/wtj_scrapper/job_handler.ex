@@ -2,7 +2,11 @@ defmodule WtjScrapper.JobHandler do
   alias WtjScrapper.Models.Job
 
   def get_job(job_path, tag) do
-    HTTP.WtjClient.get!(job_path)
+    HTTPoison.get!(
+      Application.get_env(:wtj_scrapper, :wtj_url) <> job_path,
+      [],
+      ssl: [{:versions, [:"tlsv1.2"]}]
+    )
     |> unserialize_job
     |> save_job(tag)
   end

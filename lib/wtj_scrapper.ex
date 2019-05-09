@@ -2,7 +2,6 @@ defmodule WtjScrapper do
   @moduledoc """
   Documentation for WtjScrapper.
   """
-  alias HTTP.WtjClient
 
   alias WtjScrapper.{Parser, Repo}
   alias WtjScrapper.Models.Tag
@@ -13,7 +12,6 @@ defmodule WtjScrapper do
 
   def run(tag_name) when is_binary(tag_name) do
     HTTPoison.start()
-    WtjClient.start()
 
     changeset = Tag.changeset(%Tag{}, %{name: tag_name})
 
